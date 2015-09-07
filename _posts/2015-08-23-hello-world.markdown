@@ -2,7 +2,7 @@
 layout: post
 title:  "Hello, world"
 date:   2015-08-23
-categories: hello world
+tags: hello world
 ---
 
 First post! How about some code?
@@ -11,7 +11,8 @@ First post! How about some code?
 
 #/usr/bin/python3
 
-print('Hello, world')
+>>> print('Hello, world')
+Hello, world
 
 {% endhighlight %}
 
