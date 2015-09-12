@@ -13,6 +13,6 @@ will be good practice to help the concepts sink in. I'll be writing up each
 algorithm along with the associated theory and an example in IPython
 notebooks in my [ml-python](https://github.com/jonchar/ml-python) repo.
 
-I've already implemented [Linear Regression](https://github.com/jonchar/ml-python/blob/master/Linear%20regression%20with%20multiple%20variables.ipynb)
-and [Logistic Regression](https://github.com/jonchar/ml-python/blob/master/Logistic%20regression.ipynb)
-but have a few more in the works. Stay tuned!
+I've already implemented [Linear Regression](https://jonchar.github.io/Linear-Regression)
+and [Logistic Regression](https://jonchar.github.io/Logistic-Regression)
+but have a few more in the works, namely K-means clustering and artificial neural networks. Stay tuned!
