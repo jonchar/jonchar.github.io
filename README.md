@@ -1,3 +1,3 @@
-# Professional website is professional
+## Personal website of jonchar
 
-Content TBD
+Built using jekyll.
