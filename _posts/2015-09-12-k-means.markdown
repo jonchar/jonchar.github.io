@@ -1,0 +1,15 @@
+---
+layout: post
+title:	"k-means clustering implemented in Python"
+date:	2015-09-13
+tags:	[python, k-means, unsupervised learning]
+---
+
+The latest addition to my [ml-python](https://github.com/jonchar/ml-python)
+repository is a [simple implementation](https://jonchar.github.io/k-means)
+of the [*k*-means](https://en.wikipedia.org/wiki/K-means_clustering)
+unsupervised learning algorithm. It is a straightforward implementation
+using numpy arrays that we test on some data generated with [scikit-learn](http://scikit-learn.org/stable/modules/classes.html#samples-generator).
+This algorithm is a popular and simple way to detect clusters within your
+data set, but it is not without it's limitations.
+I'll explore that in another post to come!
