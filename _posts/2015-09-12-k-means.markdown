@@ -6,7 +6,7 @@ tags:	[python, k-means, unsupervised learning]
 ---
 
 The latest addition in my quest to implement common machine
-learning algorithms in python is a simple implementation of the [*k*-means](https://en.wikipedia.org/wiki/K-means_clustering)
+learning algorithms in Python is a simple implementation of the [*k*-means](https://en.wikipedia.org/wiki/K-means_clustering)
 unsupervised learning algorithm. It is a straightforward implementation
 using numpy arrays that we test on some data generated with [scikit-learn](http://scikit-learn.org/stable/modules/classes.html#samples-generator).
 This algorithm is a popular and simple way to detect clusters within your
