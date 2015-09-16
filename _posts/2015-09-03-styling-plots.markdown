@@ -12,6 +12,10 @@ magic. It's great for iterating through revisions of a plot for whatever
 presentation or manuscript I'm preparing. Eventually, some of these plots make it
 into a manuscript and matplotlib provides the tools to make them publication-quality.
 
-I've put together a [notebook](https://github.com/jonchar/notebooks/blob/master/Styling%20plots%20for%20publication%20with%20matplotlib.ipynb) outlining a few of the
-common plot types I find myself routinely assembling as well as some of the
-styling I regularly use.
+I've put together a jupyter notebook outlining a few of the common plot types
+I find myself routinely assembling as well as some of the styling I regularly use.
+
+You can find this notebook in my [notebooks repo](https://github.com/jonchar/notebooks)
+or rendered in HTML here:
+
+**[Styling plots for publication with matplotlib](/matplotlib-styling)**
