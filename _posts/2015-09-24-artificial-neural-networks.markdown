@@ -21,16 +21,16 @@ opinion makes the code cleaner and less verbose.
 3. As I was working out the implementation, I was initially using the same
 test data as I did for my [logistic regression notebook](/notebooks/Logistic-Regression)
 and was not having much success with fitting the neural network model as I
-present it in the notebook. After re-reading some notes, I tried a different
-data set centered roughly around zero and this worked much better. I could
-probably have normalized it, but then I came across [this post by Denny Britz](http://www.wildml.com/2015/09/implementing-a-neural-network-from-scratch/)
-that uses scikit-learn's [`make_moons`](http://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html#sklearn.datasets.make_moons)
-dataset generator, which I thought was pretty cool so I decided to try it out
+present it in the notebook. After re-reading some notes, I realized that the
+network would work best on data set centered roughly around zero. I then read
+[this post by Denny Britz](http://www.wildml.com/2015/09/implementing-a-neural-network-from-scratch/) that uses scikit-learn's [`make_moons`](http://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html#sklearn.datasets.make_moons)
+dataset generator, (which I thought was pretty cool) so I decided to try it out
 with my impementation. Lo and behold, my implementation was able to fit the
 zero-centered generated data much easier.
 
 If you'd like to follow along with the implementation you can find a
 jupyter notebook with the code and associated math in my [ml-python repo](http://github.com/jonchar/ml-python)
-or read it rendered in HTML here:
+(along with a few other common machine learning algorithms) or read it rendered
+in HTML here:
 
 **[Artificial neural network in Python](/notebooks/Artificial-Neural-Networks)**
