@@ -20,11 +20,13 @@ update this post as I add them.
 
 Current Implementations:
 
-* **[Linear Regression](/Linear-Regression)**
-* **[Logistic Regression](/Logistic-Regression)**
-* **[K-Means](/k-means)** (Added Sep 9, 2015)
+* **[Linear Regression](/notebooks/Linear-Regression)**
+* **[Logistic Regression](/notebooks/Logistic-Regression)**
+* **[K-Means](/notebooks/k-means)** (Added Sep 9, 2015)
+* **[Artifical Neural Networks](/notebooks/Artificial-Neural-Networks)** (Added Sep 24, 2015)
 
-Upcoming Implementations:
+Upcoming Implementations / Notebooks:
 
-* Artificial Neural Networks
-* Support Vector Machines
+* Limitations of k-means
+* Support vector machines
+* Cross-validation

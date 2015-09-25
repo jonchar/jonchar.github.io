@@ -5,5 +5,3 @@ permalink: /about/
 ---
 
 Learner. Engineer. Scientist. Musician.
-
-

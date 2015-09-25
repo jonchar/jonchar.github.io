@@ -18,4 +18,4 @@ I find myself routinely assembling as well as some of the styling I regularly us
 You can find this notebook in my [notebooks repo](https://github.com/jonchar/notebooks)
 or rendered in HTML here:
 
-**[Styling plots for publication with matplotlib](/matplotlib-styling)**
+**[Styling plots for publication with matplotlib](/notebooks/matplotlib-styling)**

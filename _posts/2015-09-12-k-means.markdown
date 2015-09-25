@@ -16,4 +16,4 @@ I'll explore that in another post to come!
 As usual, you can find the jupyter notebook in my [ml-python repo](https://github.com/jonchar/ml-python)
 if you'd like to follow along, or rendered in HTML here:
 
-**[*k*-means implemented in Python](/k-means)**
+**[*k*-means implemented in Python](/notebooks/k-means)**
