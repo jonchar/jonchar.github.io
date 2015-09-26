@@ -33,4 +33,4 @@ jupyter notebook with the code and associated math in my [ml-python repo](http:/
 (along with a few other common machine learning algorithms) or read it rendered
 in HTML here:
 
-**[Artificial neural network in Python](/notebooks/Artificial-Neural-Networks)**
+**[Artificial neural network in Python](/notebooks/Artificial-Neural-Network)**
