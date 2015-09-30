@@ -9,7 +9,7 @@ First post! How about some code?
 
 {% highlight python %}
 
-#/usr/bin/python3
+#!/usr/bin/env python3
 
 >>> print('Hello, world')
 Hello, world
