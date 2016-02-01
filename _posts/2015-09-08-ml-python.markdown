@@ -10,7 +10,7 @@ to try implementing some of the learning algorithms using python. The course
 focuses on using GNU Octave / MATLAB as these languages are built to make
 matrix operations a breeze. I think implmenting learning algorithms in python
 will be good practice to help the concepts sink in. I'll be writing up each
-algorithm along with the associated theory and an example in IPython
+algorithm along with the associated theory and an example in Jupyter 
 notebooks in my [ml-python](https://github.com/jonchar/ml-python) repo.
 
 As of wrting this post, I've already implemented linear regression
@@ -23,7 +23,7 @@ Current Implementations:
 * **[Linear Regression](/notebooks/Linear-Regression)**
 * **[Logistic Regression](/notebooks/Logistic-Regression)**
 * **[K-Means](/notebooks/k-means)** (Added Sep 9, 2015)
-* **[Artifical Neural Networks](/notebooks/Artificial-Neural-Networks)** (Added Sep 24, 2015)
+* **[Artificial Neural Networks](/notebooks/Artificial-Neural-Networks)** (Added Sep 24, 2015)
 
 Upcoming Implementations / Notebooks:
 
