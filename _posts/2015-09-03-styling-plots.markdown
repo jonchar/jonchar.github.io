@@ -2,7 +2,7 @@
 layout: post
 title:	"Styling plots for publication with matplotlib"
 date:	2015-09-07
-tags: visualization matplotlib plotting
+tags:	[visualization, matplotlib, plotting]
 ---
 
 For the past few years my go-to environment for putting together data

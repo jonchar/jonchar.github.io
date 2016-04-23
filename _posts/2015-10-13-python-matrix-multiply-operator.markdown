@@ -1,7 +1,8 @@
 ---
-layout: page
-title: Python 3.5 matrix multiplication
-date: 2015-10-13
+layout: post 
+title:	"Python 3.5 matrix multiplication"
+date: 	2015-10-13
+tags: 	[python3]
 ---
 
 I'm excited to hear that Python 3.5 has finally added an [operator to handle

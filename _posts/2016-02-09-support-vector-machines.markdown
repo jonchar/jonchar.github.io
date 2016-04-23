@@ -1,8 +1,8 @@
 ---
 layout: page
-title: Implementing a support vector machine (SVM) using sequential minimal optimization 
-date: 2016-02-09
-tags: [supervised learning, support vector machines, SVM]
+title:	"Implementing a support vector machine (SVM) using sequential minimal optimization"
+date:	2016-02-09
+tags:	[supervised learning, support vector machines, SVM]
 ---
 
 The last few months have been busy to say the least, there are so many
