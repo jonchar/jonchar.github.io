@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: post 
 title:	"Implementing a support vector machine (SVM) using sequential minimal optimization"
 date:	2016-02-09
 tags:	[supervised learning, support vector machines, SVM]
