@@ -81,12 +81,14 @@ ul.posts {
 ul.posts li {
   line-height: 22px;
   font-size: 16px;
-  margin-bottom: 0px;
+  margin-bottom: 18px;
 }
 
 ul.posts span {
-  font-family: 'Lucida Console', 'Andale Mono', monospace;
-  color: #aaa;
+  /*font-family: 'Lucida Console', 'Andale Mono', monospace;*/
+  font-family: "open sans", sans-serif;
+  /*color: #aaa;*/
+  color: #888;
   padding-right: 5px;
   font-size:14px;
 }
