@@ -11,7 +11,7 @@ social:
   #hacker_news: 
   #stackexchange: 
   stackoverflow: 4524746
-  #twitter: 
+  twitter: joncharest 
   #facebook: 
   #tumblr: 
   #linkedin: 
@@ -21,6 +21,7 @@ social:
 
 # "Hi, I'm _______"
 name: Jon Charest
+sitename: jonchar
 email: jonthechar@gmail.com
 tagline: "what's a tagline?" 
 
