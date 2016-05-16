@@ -26,7 +26,7 @@ email: jonthechar@gmail.com
 tagline: "what's a tagline?" 
 
 # Google Analytics key, leave blank to ignore
-google_analytics_key: 
+google_analytics_key: UA-77784061-1 
 
 # Toggle "Postings are my own" disclaimer in footer
 show_disclaimer: false 
