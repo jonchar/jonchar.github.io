@@ -198,18 +198,29 @@ nav h1, nav h2 {
 }
 
 #stalker {
-  display: inline-block;
-  height: 18px;
+  /*display: inline-block;*/
+  /*display: inline;*/
+  /*height: 18px;*/
   /*margin-left: 5px;*/
 }
 
 #stalker a {
-  float: left;
-  overflow: visible;
+  /*float: left;*/
+  /*overflow: visible;*/
 }
 
 #stalker ul {
+  margin: 0;
+  padding: 0;
+}
+
+#stalker ul li {
   list-style-type: none;
+  display: inline;
+}
+
+#stalker li + li:before {
+  content: " | ";
 }
 
 /*
