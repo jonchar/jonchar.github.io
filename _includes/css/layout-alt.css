@@ -42,6 +42,13 @@
 		border: 0px;
 		padding-left: 0px;
 	}
+	#stalker ul li {
+		list-style-type: none;
+		display: inline;
+	}
+	#stalker li + li:before {
+		content: " | ";
+	}
 }
 
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */

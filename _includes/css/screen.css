@@ -216,13 +216,23 @@ nav h1, nav h2 {
 
 #stalker ul li {
   list-style-type: none;
+  display: block;
+}
+
+#stalker li {
+  margin: 0;
+  padding: 0;
+}
+
+/*#stalker ul li {
+  list-style-type: none;
   display: inline;
 }
 
 #stalker li + li:before {
   content: " | ";
 }
-
+*/
 /*
 #stalker a {
   width: 29px;
