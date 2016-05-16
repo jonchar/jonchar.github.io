@@ -200,14 +200,25 @@ nav h1, nav h2 {
 #stalker {
   display: inline-block;
   height: 18px;
-  margin-left: 5px;
+  /*margin-left: 5px;*/
 }
 
+#stalker a {
+  float: left;
+  overflow: visible;
+}
+
+#stalker ul {
+  list-style-type: none;
+}
+
+/*
 #stalker a {
   width: 29px;
   overflow: hidden;
   float: left;
 }
+*/
 
 #stalker i {
   font-size: 28px;
