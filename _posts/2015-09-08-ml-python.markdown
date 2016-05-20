@@ -24,9 +24,10 @@ Current Implementations:
 * **[Logistic Regression](/notebooks/Logistic-Regression)**
 * **[K-Means](/notebooks/k-means)** (Added Sep 9, 2015)
 * **[Artificial Neural Networks](/notebooks/Artificial-Neural-Networks)** (Added Sep 24, 2015)
+* **[Support Vector Machines](/notebooks/SVM)** (Added Feb 9, 2016)
 
 Upcoming Implementations / Notebooks:
 
 * Limitations of k-means
-* Support vector machines
+* <strike>Support vector machines</strike>
 * Cross-validation
