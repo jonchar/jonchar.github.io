@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "Exploring metal sub-genres with Python"
+title: "Exploring metal subgenres with Python"
 date: 2016-05-20
 tags: [scraping, data exploration, metal, clustering]
 ---
 
-Today's post is about an exploratory analysis of metal band sub-genres based
+Today's post is about an exploratory analysis of metal band subgenres based
 on data scraped from the web. If you're too impatient and want to dive right in,
 choose one of the links below. If you like context, or are confused right now,
 read on. Fear not, you don't have to like metal music to appreciate the
@@ -15,7 +15,7 @@ analysis.
 
 **[HTML rendering of the notebook](/notebooks/MA-Exploratory-Analysis)**
 
-## Metal sub-genres?
+## Metal subgenres?
 
 The internet lets people share music from all over the world. I am a huge fan
 of metal music, as there is often high standard of musicianship. I have also
@@ -27,7 +27,7 @@ certain regional scene, there is no absolute rule that confines genres
 geographically. For instance, you don't have to be from Norway to start a
 black metal band.
 
-Within the blanket of metal there are numerous sub-genres that overlap, separate
+Within the blanket of metal there are numerous subgenres that overlap, separate
 out, and merge with one another over time. Go to any metal forum on the internet
 and you're bound to find flame wars debating where certain bands fall within
 subgenres or where the boundary of one subgenre ends and another begins. The
@@ -77,12 +77,12 @@ visualization.
 ## What I found
 
 Through exploring the data it became obvious that distinct groups or clusters
-of metal sub-genres existed within the data set. These clusters are all
+of metal subgenres existed within the data set. These clusters are all
 based on semantic relationships between genre labels. What was surprising
 was the degree of structure within the data. There are some groups that
 overlap with neighboring groups, while there are other groups that are almost
 entirely isolated. This is a very exicting result given that the only
-underlying assumption I held was that sub-genres exist (a fairly benign
+underlying assumption I held was that subgenres exist (a fairly benign
 and obvious statement).
 
 While I'm sure there are more interesting perspectives to be extracted from
