@@ -2,7 +2,7 @@
 layout: post
 title: "Exploring metal sub-genres with Python"
 date: 2016-05-20
-categories: [scraping, data exploration, metal, clustering]
+tags: [scraping, data exploration, metal, clustering]
 ---
 
 Today's post is about an exploratory analysis of metal band sub-genres based
