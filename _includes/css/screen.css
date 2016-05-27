@@ -93,6 +93,7 @@ ul.posts span {
   font-size:14px;
 }
 
+
 .meta {
   color: #aaa;
   margin: 0 0 10px 0;
@@ -249,6 +250,19 @@ nav h1, nav h2 {
 #stalker a:hover {
   text-decoration: none;
   color: {{ site.data.theme.highlight_color }};
+}
+
+#tags ul li {
+  list-style-type: none;
+  display: inline;
+  line-height: 22px;
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 18px;
+}
+
+#tags li + li:before {
+  content: " | ";
 }
 
 i.fa-hn {
