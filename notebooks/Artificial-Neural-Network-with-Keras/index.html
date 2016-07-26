@@ -11754,7 +11754,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Artificial-neural-networks-with-Keras">Artificial neural networks with Keras<a class="anchor-link" href="#Artificial-neural-networks-with-Keras">&#182;</a></h2><p>In a previous notebook, I showed <a href="http://jonchar.net/notebooks/Artificial-Neural-Network/">an example implementation of an artificial neural network (ANN)</a> using only <code>numpy</code>. I took this approach because I really wanted to dig into the guts of how ANNs to understand what they're doing on a fundamental level. The architecture of the example network I used was very simple: a single input layer for two features, two hidden layers with 5 hidden units each, and an output layer with two units corresponding to output classes. Each layer was fully-connected to the next one (these are known as "dense" layers), which showed how things can get complex fairly quickly. However, ANNs really shine in deep learning, where the number of layers far exceeds the number in my previous example. It's no surprise then that a number of libraries have recently popped up for working with ANNs in Python.</p>
+<h2 id="Artificial-neural-networks-with-Keras">Artificial neural networks with Keras<a class="anchor-link" href="#Artificial-neural-networks-with-Keras">&#182;</a></h2><p>In a previous notebook, I showed <a href="http://jonchar.net/notebooks/Artificial-Neural-Network/">an example implementation of an artificial neural network (ANN)</a> using only <code>numpy</code>. I took this approach because I really wanted to dig into the guts of how ANNs work to understand what they're doing on a fundamental level. The architecture of the example network I used was very simple: a single input layer for two features, two hidden layers with 5 hidden units each, and an output layer with two units corresponding to output classes. Each layer was fully-connected to the next one (these are known as "dense" layers), which showed how things can get complex fairly quickly. However, ANNs really shine in deep learning, where the number of layers far exceeds the number in my previous example. It's no surprise then that a number of libraries have recently popped up for working with ANNs in Python.</p>
 <h3 id="Options-for-buliding-ANNs-in-Python">Options for buliding ANNs in Python<a class="anchor-link" href="#Options-for-buliding-ANNs-in-Python">&#182;</a></h3><p>Several libraries exist in the Python ecosystem for dealing with deep learning / ANNs in various capacities such as <a href="http://deeplearning.net/software/theano/">Theano</a>, <a href="https://www.tensorflow.org/">TensorFlow</a>, <a href="http://keras.io/">Keras</a>, <a href="https://github.com/Lasagne/Lasagne">Lasagne</a>, <a href="https://github.com/dnouri/nolearn">NoLearn</a>, and <a href="https://github.com/mila-udem/blocks">Blocks</a>. These libraries however are not all mutually exclusive nor do they serve to fill the same niches. You can choose your favorite based on how dirty you like to get your hands.</p>
 <p>In this notebook I will re-implement our <a href="http://jonchar.net/notebooks/Artificial-Neural-Network/#An-example-network">example network</a> using <a href="http://keras.io/">Keras</a>. Keras is a framework for building ANNs that sits on top of either a Theano or TensorFlow backend. I like the way Keras works because I find it allows you to focus on the network structure, and you can get a model up and training very quickly. The <a href="http://blog.keras.io/">Keras Blog</a> has some great examples of how to use the framework.</p>
 <h3 id="A-note-on-using-your-GPU">A note on using your GPU<a class="anchor-link" href="#A-note-on-using-your-GPU">&#182;</a></h3><p>It is common to use GPUs to accelerate the training of neural networks as the underlying computations lend themselves well to parallelization. If you want to use the GPU on your local machine for training neural networks, it may take some work to get things up and running. My current setup is a 2013 MacBook Pro running Arch Linux. The machine has a NVIDIA GeForce GT 650M and I've set up Theano to use the device. This requires installing CUDA and a compatible version of gcc as suggested by the <a href="https://wiki.archlinux.org/index.php/GPGPU">GPGPU page on the Arch Wiki</a>. I have tried to use Theano with a GPU on a Windows 8 machine, but had no success after investing a large amount of time. <strong>TL;DR:</strong> If you want to use your local GPU to train neural networks, you're probably best off running Linux.</p>
@@ -11765,7 +11765,8 @@ div#notebook {
 <li>$s_3 = 5$ (five hidden units, not counting one bias unit)</li>
 <li>$s_4 = 2$ (two output classes)</li>
 </ul>
-<p>Also recall that we used a sigmoid activation function, and our cost function included a regularization term.</p>
+<p>Also recall that we used a sigmoid activation function, and our cost function included a regularization term. We'll keep this in mind as we build our network.</p>
+<p>The Keras API is based around layers that are organized into models (see <a href="http://keras.io/#getting-started-30-seconds-to-keras">30 seconds to Keras</a> for a quick overview). Let's import the classes we will need.</p>
 
 </div>
 </div>
@@ -11781,70 +11782,8 @@ div#notebook {
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
-</pre></div>
 
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_decision_boundary</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Paired&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function to plot the decision boundary and data points of a model.</span>
-<span class="sd">    Data points are colored based on their actual label.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
-    
-    <span class="c1"># Define region of interest by data limits</span>
-    <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="n">steps</span> <span class="o">=</span> <span class="mi">1000</span>
-    <span class="n">x_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">steps</span><span class="p">)</span>
-    <span class="n">y_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">steps</span><span class="p">)</span>
-    <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x_span</span><span class="p">,</span> <span class="n">y_span</span><span class="p">)</span>
-
-    <span class="c1"># Make predictions across region of interest</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xx</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">yy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()])</span>
-
-    <span class="c1"># Plot decision boundary in region of interest</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-    
-    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-
-    <span class="c1"># Get predicted labels on training data and plot</span>
-    <span class="n">train_labels</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The Keras API is based around layers that are organized into models (see <a href="http://keras.io/#getting-started-30-seconds-to-keras">30 seconds to Keras</a> for a quick overview). Our simple network will use a sequential model with dense layers and a sigmoid activation function.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Sequential</span>
 <span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Dense</span>
 <span class="kn">from</span> <span class="nn">keras.optimizers</span> <span class="k">import</span> <span class="n">SGD</span>
 </pre></div>
@@ -11874,14 +11813,14 @@ Using gpu device 0: GeForce GT 650M (CNMeM is disabled, cuDNN 5005)
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Generate the same dataset from our previous example</p>
+<p>Next, we'll generate the same dataset we used in our previous notebook.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">make_moons</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -11898,7 +11837,7 @@ Using gpu device 0: GeForce GT 650M (CNMeM is disabled, cuDNN 5005)
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[2]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -13427,41 +13366,12 @@ height=255
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>(1000, 2)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Defining-the-model">Defining the model<a class="anchor-link" href="#Defining-the-model">&#182;</a></h3><p>We first instantiate a model object, and then add layers to it with their respective activation functions. Keras has different activation functions built in such as <code>'sigmoid'</code>, <code>'tanh'</code>, <code>'softmax'</code>, and <a href="http://keras.io/activations/">many others</a>. Also built in are different weight <a href="http://keras.io/initializations/">initialization options</a>. The choice of activation and initialization can be specified using <code>kwargs</code> when adding a layer to the model. Our example network uses a sigmoid activation function and initializes the weights between $[-\epsilon, \epsilon]$. Where $\epsilon$ is defined as:</p>
+<h3 id="Defining-the-model">Defining the model<a class="anchor-link" href="#Defining-the-model">&#182;</a></h3><p>We first instantiate a model object, and then add layers to it with their respective activation functions and weight initializations. Keras has different activation functions built in such as <code>'sigmoid'</code>, <code>'tanh'</code>, <code>'softmax'</code>, and <a href="http://keras.io/activations/">many others</a>. Also built in are different weight <a href="http://keras.io/initializations/">initialization options</a>. The choice of activation and initialization can be specified using <code>kwargs</code> when adding a layer to the model. Our example network uses a sigmoid activation function and initializes the weights between $[-\epsilon, \epsilon]$. Where $\epsilon$ is defined as:</p>
 $$\epsilon = \frac{\sqrt{6}}{\sqrt{L_{output}+L_{input}}}$$<p>This initialization method corresponds to the <code>'glorot_uniform'</code> initialization option in Keras.</p>
 
 </div>
@@ -13469,13 +13379,16 @@ $$\epsilon = \frac{\sqrt{6}}{\sqrt{L_{output}+L_{input}}}$$<p>This initializatio
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define our model object</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
 
+<span class="c1"># kwarg dict for convenience</span>
 <span class="n">layer_kw</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;glorot_uniform&#39;</span><span class="p">)</span>
 
+<span class="c1"># Add layers to our model</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">output_dim</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">),</span> <span class="o">**</span><span class="n">layer_kw</span><span class="p">))</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">output_dim</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">layer_kw</span><span class="p">))</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">output_dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">layer_kw</span><span class="p">))</span>
@@ -13491,14 +13404,14 @@ $$\epsilon = \frac{\sqrt{6}}{\sqrt{L_{output}+L_{input}}}$$<p>This initializatio
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Defining-the-optimizer">Defining the optimizer<a class="anchor-link" href="#Defining-the-optimizer">&#182;</a></h3><p>You must also specify an optimizer for Keras to use when training your model. In our previous example we used batch gradient descent where we used our entire training set for each training iteration. Our data set wasn't particularly large so this was a feasible option, however in practice stochastic gradient descent is used. This is when the model is trained on smaller, random batches of the training set. This is also usually coupled with a smaller learning rate. Here we will define a stochastic gradient descent optimizer with a learning rate of 0.01 ($\alpha$, which we set to 0.5 in our previous example), which should behave similarly. In Keras, a stochastic gradient descent optimizer object is <code>SGD</code>.</p>
+<h3 id="Defining-the-optimizer">Defining the optimizer<a class="anchor-link" href="#Defining-the-optimizer">&#182;</a></h3><p>In Keras, you must also specify an optimizer to use when training your model. In our previous example we used batch gradient descent where we used our entire training set for each training iteration. Our data set wasn't particularly large so this was a feasible option, however in practice stochastic gradient descent is used. This is when the model is trained on smaller, random batches of the training set. This is also usually coupled with a smaller learning rate. Here we will define a stochastic gradient descent optimizer with a learning rate of 0.01 ($\alpha$, which we set to 0.5 in our previous example), which should behave similarly. In Keras, a stochastic gradient descent optimizer object is <code>SGD</code>.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sgd</span> <span class="o">=</span> <span class="n">SGD</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
@@ -13521,7 +13434,7 @@ $$\epsilon = \frac{\sqrt{6}}{\sqrt{L_{output}+L_{input}}}$$<p>This initializatio
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">sgd</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">)</span>
@@ -13544,7 +13457,7 @@ $$\epsilon = \frac{\sqrt{6}}{\sqrt{L_{output}+L_{input}}}$$<p>This initializatio
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">500</span><span class="p">],</span> <span class="n">y</span><span class="p">[:</span><span class="mi">500</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">nb_epoch</span><span class="o">=</span><span class="mi">4000</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -13567,7 +13480,7 @@ $$\epsilon = \frac{\sqrt{6}}{\sqrt{L_{output}+L_{input}}}$$<p>This initializatio
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">])</span>
@@ -13581,11 +13494,11 @@ $$\epsilon = \frac{\sqrt{6}}{\sqrt{L_{output}+L_{input}}}$$<p>This initializatio
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x7fec8f595e10&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x7f30f8063b00&gt;]</pre>
 </div>
 
 </div>
@@ -13919,7 +13832,7 @@ height=255
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Interesting, this looks a lot like the loss during traning of our <a href="http://jonchar.net/notebooks/Artificial-Neural-Network/#Training-the-model:-Take-2">previous implementation</a>.</p>
+<p>Interesting...this looks a lot like the loss during traning of our <a href="http://jonchar.net/notebooks/Artificial-Neural-Network/#Training-the-model:-Take-2">previous implementation</a>.</p>
 <h3 id="Visualizing-the-results">Visualizing the results<a class="anchor-link" href="#Visualizing-the-results">&#182;</a></h3><p>Here we'll bring back our <code>plot_decision_boundary</code> function and have it use a divergent color map.</p>
 
 </div>
@@ -13927,7 +13840,48 @@ height=255
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot_decision_boundary</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Paired&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to plot the decision boundary and data points of a model.</span>
+<span class="sd">    Data points are colored based on their actual label.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
+    
+    <span class="c1"># Define region of interest by data limits</span>
+    <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">x_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">steps</span><span class="p">)</span>
+    <span class="n">y_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">steps</span><span class="p">)</span>
+    <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x_span</span><span class="p">,</span> <span class="n">y_span</span><span class="p">)</span>
+
+    <span class="c1"># Make predictions across region of interest</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xx</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">yy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()])</span>
+
+    <span class="c1"># Plot decision boundary in region of interest</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="c1"># Get predicted labels on training data and plot</span>
+    <span class="n">train_labels</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_decision_boundary</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdBu&#39;</span><span class="p">)</span>
@@ -13941,12 +13895,12 @@ height=255
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[11]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[9]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>(&lt;matplotlib.figure.Figure at 0x7fec8f555be0&gt;,
- &lt;matplotlib.axes._subplots.AxesSubplot at 0x7feca0094080&gt;)</pre>
+<pre>(&lt;matplotlib.figure.Figure at 0x7f313e9b6160&gt;,
+ &lt;matplotlib.axes._subplots.AxesSubplot at 0x7f31003d6d68&gt;)</pre>
 </div>
 
 </div>
