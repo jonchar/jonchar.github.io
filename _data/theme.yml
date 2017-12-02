@@ -14,7 +14,7 @@ social:
   twitter: joncharest 
   #facebook: 
   #tumblr: 
-  linkedin: jonchar 
+  #linkedin:
   #gplus: 
   #gravatar: 
   #flickr: 
@@ -29,7 +29,7 @@ tagline: "what's a tagline?"
 google_analytics_key: UA-77784061-1 
 
 # Toggle "Postings are my own" disclaimer in footer
-show_disclaimer: false 
+show_disclaimer: true
 
 # Toggle link/icon to view atom feed (/atom.xml) in sidebar
 show_atom_feed: true
