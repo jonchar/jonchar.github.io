@@ -1,7 +1,12 @@
-<a href="mailto:{{ site.data.theme.email }}">Email</a> or follow me:
+Connect:
 </br>
 <div id="stalker">
 	<ul>
+		{% if site.data.theme.email %}
+		<li>
+			<a href="mailto:{{ site.data.theme.email }}">Email</a>
+		</li>
+		{% endif %}
 
 		{% if site.data.theme.social.github %}
 		<li>
