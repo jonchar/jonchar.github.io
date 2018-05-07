@@ -7,9 +7,9 @@
 		<!-- Bootstrap 4 CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-		<link rel="stylesheet" href="./static/style.css">
-		<link rel="stylesheet" href="./static/pygments.css">
-		<title>Home — jonchar.net</title>
+		<link rel="stylesheet" href="../../static/style.css">
+		<link rel="stylesheet" href="../../static/pygments.css">
+		<title>k-means clustering implemented in Python — jonchar.net</title>
 	</head>
 
 	<body>
@@ -29,23 +29,23 @@
 							<nav>
 								<ul class="nav nav-pills flex-column">
 									<li class="nav-item">
+										<a class="nav-link "
+								 href="../../">Home</a>
+									</li>
+								
+									<li class="nav-item">
 										<a class="nav-link  active "
-								 href="./">Home</a>
+										href="../../blog/">Blog</a>
 									</li>
 								
 									<li class="nav-item">
 										<a class="nav-link "
-										href="./blog/">Blog</a>
+										href="../../notebooks/">Notebooks</a>
 									</li>
 								
 									<li class="nav-item">
 										<a class="nav-link "
-										href="./notebooks/">Notebooks</a>
-									</li>
-								
-									<li class="nav-item">
-										<a class="nav-link "
-										href="./about/">About</a>
+										href="../../about/">About</a>
 									</li>
 								
 								</ul>
@@ -60,8 +60,24 @@
 
 							<div>
 								
-<h2>Home</h2>
-<p>Of some nonsense.</p>
+  
+  <div class="blog-post">
+		
+			<p class="meta">2015-09-13</p>
+			<h2>k-means clustering implemented in Python</h2>
+			<p>The latest addition in my quest to implement common machine
+learning algorithms in Python is a simple implementation of the <a href="https://en.wikipedia.org/wiki/K-means_clustering"><em>k</em>-means</a>
+unsupervised learning algorithm. It is a straightforward implementation
+using numpy arrays that we test on some data generated with <a href="http://scikit-learn.org/stable/modules/classes.html#samples-generator">scikit-learn</a>.
+This algorithm is a popular and simple way to detect clusters within your
+data set, but it is not without it's limitations.
+I'll explore that in another post to come!</p>
+<p>As usual, you can find the jupyter notebook in my <a href="https://github.com/jonchar/ml-python">ml-python repo</a>
+if you'd like to follow along, or rendered in HTML here:</p>
+<p><strong><a href="../../notebooks/k-means"><em>k</em>-means implemented in Python</a></strong></p>
+
+  
+  </div>
 
 
 							</div>

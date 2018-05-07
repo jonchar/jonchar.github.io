@@ -7,9 +7,9 @@
 		<!-- Bootstrap 4 CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-		<link rel="stylesheet" href="./static/style.css">
-		<link rel="stylesheet" href="./static/pygments.css">
-		<title>Home — jonchar.net</title>
+		<link rel="stylesheet" href="../../static/style.css">
+		<link rel="stylesheet" href="../../static/pygments.css">
+		<title>Python 3.5 matrix multiplication — jonchar.net</title>
 	</head>
 
 	<body>
@@ -29,23 +29,23 @@
 							<nav>
 								<ul class="nav nav-pills flex-column">
 									<li class="nav-item">
+										<a class="nav-link "
+								 href="../../">Home</a>
+									</li>
+								
+									<li class="nav-item">
 										<a class="nav-link  active "
-								 href="./">Home</a>
+										href="../../blog/">Blog</a>
 									</li>
 								
 									<li class="nav-item">
 										<a class="nav-link "
-										href="./blog/">Blog</a>
+										href="../../notebooks/">Notebooks</a>
 									</li>
 								
 									<li class="nav-item">
 										<a class="nav-link "
-										href="./notebooks/">Notebooks</a>
-									</li>
-								
-									<li class="nav-item">
-										<a class="nav-link "
-										href="./about/">About</a>
+										href="../../about/">About</a>
 									</li>
 								
 								</ul>
@@ -60,8 +60,25 @@
 
 							<div>
 								
-<h2>Home</h2>
-<p>Of some nonsense.</p>
+  
+  <div class="blog-post">
+		
+			<p class="meta">2015-10-13</p>
+			<h2>Python 3.5 matrix multiplication</h2>
+			<p>I'm excited to hear that Python 3.5 has finally added an <a href="https://docs.python.org/3/whatsnew/3.5.html#whatsnew-pep-465">operator to handle
+matrix multiplication</a>.
+Why you ask? Because I no longer have to call <code>np.dot()</code> every time I want to
+multiply two matrices. I can now use the new <code>@</code> operator to multiply matrices.
+<code>A @ B</code> looks a lot nicer than <code>np.dot(A, B)</code> or <code>A.dot(B)</code> and will make
+it much more pleasant to write code that performs linear algebra. Python 3.5
+has finally arrived in the official <a href="https://www.archlinux.org/packages/extra/x86_64/python/">Arch Linux repos</a>
+and I'm excited to get started using it.</p>
+<p>I will surely be using this in the next notebook addition to
+<a href="http://github.com/jonchar/ml-python/">ml-python</a>, which will be a <a href="https://en.wikipedia.org/wiki/Support_vector_machine">Support
+Vector Machine</a>.</p>
+
+  
+  </div>
 
 
 							</div>

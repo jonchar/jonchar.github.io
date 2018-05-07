@@ -7,9 +7,9 @@
 		<!-- Bootstrap 4 CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-		<link rel="stylesheet" href="./static/style.css">
-		<link rel="stylesheet" href="./static/pygments.css">
-		<title>Home — jonchar.net</title>
+		<link rel="stylesheet" href="../../static/style.css">
+		<link rel="stylesheet" href="../../static/pygments.css">
+		<title>An artificial neural network using Keras — jonchar.net</title>
 	</head>
 
 	<body>
@@ -29,23 +29,23 @@
 							<nav>
 								<ul class="nav nav-pills flex-column">
 									<li class="nav-item">
+										<a class="nav-link "
+								 href="../../">Home</a>
+									</li>
+								
+									<li class="nav-item">
 										<a class="nav-link  active "
-								 href="./">Home</a>
+										href="../../blog/">Blog</a>
 									</li>
 								
 									<li class="nav-item">
 										<a class="nav-link "
-										href="./blog/">Blog</a>
+										href="../../notebooks/">Notebooks</a>
 									</li>
 								
 									<li class="nav-item">
 										<a class="nav-link "
-										href="./notebooks/">Notebooks</a>
-									</li>
-								
-									<li class="nav-item">
-										<a class="nav-link "
-										href="./about/">About</a>
+										href="../../about/">About</a>
 									</li>
 								
 								</ul>
@@ -60,8 +60,29 @@
 
 							<div>
 								
-<h2>Home</h2>
-<p>Of some nonsense.</p>
+  
+  <div class="blog-post">
+		
+			<p class="meta">2016-07-26</p>
+			<h2>An artificial neural network using Keras</h2>
+			<p>Python has no shortage of utilities for building artificial neural networks
+(ANNs). <a href="http://keras.io">Keras</a> is a library for building ANNs that sits atop
+of Theano or TensorFlow. I recently tried it out when building a submission for
+Kaggle's <a href="https://www.kaggle.com/c/ultrasound-nerve-segmentation">Ultrasound Nerve Segmentation
+competition</a> and found
+it to be a pleasure to work with. I find it strikes a nice balance &mdash;
+allowing you to focus on the network architecture and avoid getting bogged down
+in the implementation details. However you can still get your hands dirty if
+you need to.</p>
+<p>I've put together a notebook that uses Keras to implement the same ANN I coded
+from scratch in a <a href="../../notebooks/Artificial-Neural-Network">previous notebook</a>.
+As usual, if you want to follow along or play with the code yourself you can
+find the notebook in my <a href="http://github.com/jonchar/ml-python">ml-python repo</a>.</p>
+<p><strong><a href="../../notebooks/Artificial-Neural-Network-with-Keras">Artificial neural network in Python with
+Keras</a></strong></p>
+
+  
+  </div>
 
 
 							</div>

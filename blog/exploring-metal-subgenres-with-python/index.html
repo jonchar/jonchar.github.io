@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Bootstrap 4 CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+		<link rel="stylesheet" href="../../static/style.css">
+		<link rel="stylesheet" href="../../static/pygments.css">
+		<title>Exploring metal subgenres with Python — jonchar.net</title>
+	</head>
+
+	<body>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+
+					<header>
+						<h1 class="pt-4 pb-2">
+							<a href="/">Jon's Tech Blog</a>
+						</h1>
+						<div id="bio" class="py-4 align-baseline">
+							<code>contents = [code, data, ml, curiosity]</code>
+						</div>
+						<div id="nav" class="py-4">
+							<nav>
+								<ul class="nav nav-pills flex-column">
+									<li class="nav-item">
+										<a class="nav-link "
+								 href="../../">Home</a>
+									</li>
+								
+									<li class="nav-item">
+										<a class="nav-link  active "
+										href="../../blog/">Blog</a>
+									</li>
+								
+									<li class="nav-item">
+										<a class="nav-link "
+										href="../../notebooks/">Notebooks</a>
+									</li>
+								
+									<li class="nav-item">
+										<a class="nav-link "
+										href="../../about/">About</a>
+									</li>
+								
+								</ul>
+							</nav>
+						</div>
+					</header>
+				</div>
+
+				<div class="col-md-9">
+					<div class="content pt-md-4 pl-md-4">
+						<main>
+
+							<div>
+								
+  
+  <div class="blog-post">
+		
+			<p class="meta">2016-05-20</p>
+			<h2>Exploring metal subgenres with Python</h2>
+			<p>Today's post is about an exploratory analysis of metal band subgenres based
+on data scraped from the web. If you're too impatient and want to dive right in,
+choose one of the links below. If you like context, or are confused right now,
+read on. Fear not, you don't have to like metal music to appreciate the
+analysis.</p>
+<p><strong><a href="https://github.com/jonchar/ma-scraper">Github repo containing the Jupyter notebook and some data</a></strong></p>
+<p><strong><a href="../../notebooks/MA-Exploratory-Analysis">HTML rendering of the notebook</a></strong></p>
+<h2>Metal subgenres?</h2>
+<p>The internet lets people share music from all over the world. I am a huge fan
+of metal music, as there is often high standard of musicianship. I have also
+been playing guitar for going on 15 years. I know a lot of the metal I listen
+to is made by bands from many different countries. I can think of metal bands
+I love from Sweden, France, Germany, Italy, Canada, Austrailia, the UK, and
+Norway just off the top of my head. While specific genres often grow out of a
+certain regional scene, there is no absolute rule that confines genres
+geographically. For instance, you don't have to be from Norway to start a
+black metal band.</p>
+<p>Within the blanket of metal there are numerous subgenres that overlap, separate
+out, and merge with one another over time. Go to any metal forum on the internet
+and you're bound to find flame wars debating where certain bands fall within
+subgenres or where the boundary of one subgenre ends and another begins. The
+truth of it is that these categorizations are fuzzy and subjective. A single
+band can often traverse genres across subsequent albums or even within a single
+song. Or they might be the same throughout their entire career. Music is very
+personal as well, readily stoking the flames of debate. On top of it all, the
+words we use to describe metal subgenres can also be limiting compared to the
+information contained in a sound, a song, or an album. Despite all this, it is
+generally accepted that <em>distinct subgenres do exist</em>.</p>
+<p>Luckily, there is the <a href="http://www.metal-archives.com">Metal Archives</a> (M-A). An
+extraordinarily comprehensive user-contributed repository of information on
+metal bands. It has everything from band names with countries of origin, to
+timelines of lineup changes, to numerically scored album reviews. They also have
+a genre description for each band on their site. Just what we need to make
+definitive conclusions about genre memberships! As far as I know, the Metal
+Archives is the largest compendium of data on metal bands and I believe it is
+all user-contributed. That said, a huge thank you to the maintainers of the
+Metal Archives and all of the users who have contributed to it!</p>
+<h2>Scraping</h2>
+<p>The script <code>MA_scraper.py</code> downloads only the information presented when you
+browse bands alphabetically. This includes each band's name (with a link to the
+band's M-A page), country of origin, genre, and status (active, split-up,
+changed name, on hold, unknown, or disputed). The data was scraped on
+2016-04-01 and consists of a little over 100,000 bands.</p>
+<h2>Exploring</h2>
+<p>I started out just wanting to write a web scraper for the Metal Archives. After
+realizing that there was an incredibly huge amount of information up there, I
+decided to start with just basic band information. The most interesting of which
+to me was the genre description. Initial exploration of the data led me to three
+general questions:</p>
+<ol>
+<li>What groups of subgenres exist semantically?</li>
+<li>What words or terms define these groups?</li>
+<li>How are they all related?</li>
+</ol>
+<p>The exploratory analysis I ended up with hits on these primary questions with a
+few interesting detours along the way. This took me through topics such as NLP,
+dimensionality reduction, clustering, basic graph theory, and of course data
+visualization.</p>
+<h2>What I found</h2>
+<p>Through exploring the data it became obvious that distinct groups or clusters
+of metal subgenres existed within the data set. These clusters are all
+based on semantic relationships between genre labels. What was surprising
+was the degree of structure within the data. There are some groups that
+overlap with neighboring groups, while there are other groups that are almost
+entirely isolated. This is a very exicting result given that the only
+underlying assumption I held was that subgenres exist (a fairly benign
+and obvious statement).</p>
+<p>While I'm sure there are more interesting perspectives to be extracted from
+this particular data set, I decided to tie it off here but may come back to it
+in the future (predicting album review scores using NLP anyone?).</p>
+<p>Is any of this useful? Well you could check out that
+<a href="../../notebooks/MA-Exploratory-Analysis#Conclusion">section in the notebook</a>
+and see for yourself!</p>
+<h2>A note on inspiration</h2>
+<p>A good amount of inspiration for the analysis I ended up doing came from reading
+<a href="http://www.alexkras.com/i-tried-to-virtually-stalk-mark-zuckerberg/">Alex Kras' post</a>
+where he analyzes comments from a single post by Mark Zuckerberg after trying to
+figure out how to be the first commenter on one of his posts. I really liked the
+graph visualization used and how he found the subset asking Zuckerberg for
+money. Oh and the word cloud was cool too!</p>
+<p>Special thanks to <a href="http://www.ericmajinglong.com/">Eric Ma</a> for brainstorming
+analysis approaches &amp; visualization techniques with me. Also thanks to
+<a href="http://bostonpython.com">Boston Python</a> for holding great meetups where ideas
+for blog posts like this are born.</p>
+
+  
+  </div>
+
+
+							</div>
+						</main>
+
+						<footer class="mt-4 pt-2">
+							<div class="disclaimer">
+								<p>
+								All views expressed on this site are my own and do not represent the opinions of any entity whatsoever with which I have been, am now, or will be affiliated.
+								</p>
+								<p>
+								&copy; Jon Charest, 2018
+								</p>
+							</div>
+						</footer>
+
+					</div>
+				</div>
+
+		</div>
+
+		<!-- Bootstrap JS dependencies -->
+
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	</body>
+</html>

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Bootstrap 4 CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+		<link rel="stylesheet" href="../../static/style.css">
+		<link rel="stylesheet" href="../../static/pygments.css">
+		<title>Implementing a support vector machine (SVM) using sequential minimal optimization — jonchar.net</title>
+	</head>
+
+	<body>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+
+					<header>
+						<h1 class="pt-4 pb-2">
+							<a href="/">Jon's Tech Blog</a>
+						</h1>
+						<div id="bio" class="py-4 align-baseline">
+							<code>contents = [code, data, ml, curiosity]</code>
+						</div>
+						<div id="nav" class="py-4">
+							<nav>
+								<ul class="nav nav-pills flex-column">
+									<li class="nav-item">
+										<a class="nav-link "
+								 href="../../">Home</a>
+									</li>
+								
+									<li class="nav-item">
+										<a class="nav-link  active "
+										href="../../blog/">Blog</a>
+									</li>
+								
+									<li class="nav-item">
+										<a class="nav-link "
+										href="../../notebooks/">Notebooks</a>
+									</li>
+								
+									<li class="nav-item">
+										<a class="nav-link "
+										href="../../about/">About</a>
+									</li>
+								
+								</ul>
+							</nav>
+						</div>
+					</header>
+				</div>
+
+				<div class="col-md-9">
+					<div class="content pt-md-4 pl-md-4">
+						<main>
+
+							<div>
+								
+  
+  <div class="blog-post">
+		
+			<p class="meta">2016-02-09</p>
+			<h2>Implementing a support vector machine (SVM) using sequential minimal optimization</h2>
+			<p>The last few months have been busy to say the least, there are so many
+interesting things I want to learn but there are only so many hours in the
+day. One of those things was getting a handle on how to solve the <a href="../../notebooks/SVM">support
+vector machine optimization problem using sequential minimal optimization
+(SMO)</a>. I based my code on the pseudocode presented in the
+original paper describing the SMO algorithm by John Platt at Microsoft in 1998.</p>
+<p>SVMs differ from the previous supervised learning algorithms I've implemented
+in a few ways:</p>
+<ol>
+<li><p>The SVM optimization problem is a constrained convex optimization
+problem which means our previous approach of finding the derivative of the
+cost function and using gradient descent won't work as well. There are many
+solvers that will work such as CVXOPT and LIBLINEAR/LIBSVM. Scikit-learn
+uses LIBLINEAR/LIBSVM under the hood, which in turn uses an SMO-like algorithm.</p>
+</li>
+<li><p>SVMs can easily make use of kernels, which map input features into a
+different space. What this means is that non-linear decision boundaries can be
+easily obtained depending on the kernel used. Rather than feature engineering,
+one can explore which kernel best lends itself to the data you are modeling.</p>
+</li>
+<li><p>For classification problems, SVMs only weight examples that are close to
+the decision boundary. Thus adding new training data far from the boundary
+will not change the boundary.</p>
+</li>
+<li><p>Regularization is added via a single parameter C (by convention) and the
+degree of regularization is inversely proportional to its magnitude. This is
+in contrast to the previous algorithms I've implemented in Python where the
+regularization parameter's magnitude and the degree of regularization shared
+a direct relationship.</p>
+</li>
+</ol>
+<p>This particular implementation was pretty tricky to get off the ground but I
+did eventually get it to work. It doesn't work perfectly, which makes me think
+there are a few parts I didn't get quite right. It was a tremendous learning
+experience working on this anyway so I'm happy with it.</p>
+<p>You can find the Jupyter notebook to follow along with in my <a href="http://github.com/jonchar/ml-python">ml-python repo</a>
+along with the others, and an HTML version <a href="../../notebooks/SVM">here</a>.</p>
+<p>If you find something wrong in the implementation feel free to contact me with your
+feedback!</p>
+
+  
+  </div>
+
+
+							</div>
+						</main>
+
+						<footer class="mt-4 pt-2">
+							<div class="disclaimer">
+								<p>
+								All views expressed on this site are my own and do not represent the opinions of any entity whatsoever with which I have been, am now, or will be affiliated.
+								</p>
+								<p>
+								&copy; Jon Charest, 2018
+								</p>
+							</div>
+						</footer>
+
+					</div>
+				</div>
+
+		</div>
+
+		<!-- Bootstrap JS dependencies -->
+
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	</body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Bootstrap 4 CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+		<link rel="stylesheet" href="../../static/style.css">
+		<link rel="stylesheet" href="../../static/pygments.css">
+		<title>An artificial neural network in Python — jonchar.net</title>
+	</head>
+
+	<body>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+
+					<header>
+						<h1 class="pt-4 pb-2">
+							<a href="/">Jon's Tech Blog</a>
+						</h1>
+						<div id="bio" class="py-4 align-baseline">
+							<code>contents = [code, data, ml, curiosity]</code>
+						</div>
+						<div id="nav" class="py-4">
+							<nav>
+								<ul class="nav nav-pills flex-column">
+									<li class="nav-item">
+										<a class="nav-link "
+								 href="../../">Home</a>
+									</li>
+								
+									<li class="nav-item">
+										<a class="nav-link  active "
+										href="../../blog/">Blog</a>
+									</li>
+								
+									<li class="nav-item">
+										<a class="nav-link "
+										href="../../notebooks/">Notebooks</a>
+									</li>
+								
+									<li class="nav-item">
+										<a class="nav-link "
+										href="../../about/">About</a>
+									</li>
+								
+								</ul>
+							</nav>
+						</div>
+					</header>
+				</div>
+
+				<div class="col-md-9">
+					<div class="content pt-md-4 pl-md-4">
+						<main>
+
+							<div>
+								
+  
+  <div class="blog-post">
+		
+			<p class="meta">2015-09-24</p>
+			<h2>An artificial neural network in Python</h2>
+			<p>The next addition to my collection of learning algorithms implemented
+in Python is an <a href="../../notebooks/Artificial-Neural-Network">artificial neural network</a>.
+I spent a bit more time implementing this one compared to the others
+for a few reasons:</p>
+<ol>
+<li><p>I wanted to make the code as modular as I could while still illustrating
+the basic concepts of forward propagation and back propagation.
+Artificial neural networks are by definition made up of many repeating structures, so it makes sense to me to take a similar approach when implementing one. It also makes the code easily re-usable.</p>
+</li>
+<li><p>I tried to vectorize many of the algorithms rather than relying on for loops.
+This makes many of the operations much faster by using numpy arrays and in my
+opinion makes the code cleaner and less verbose.</p>
+</li>
+<li><p>As I was working out the implementation, I was initially using the same
+test data as I did for my <a href="../../notebooks/Logistic-Regression">logistic regression notebook</a>
+and was not having much success with fitting the neural network model as I
+present it in the notebook. After re-reading some notes, I realized that the
+network would work best on data set centered roughly around zero. I then read
+<a href="http://www.wildml.com/2015/09/implementing-a-neural-network-from-scratch/">this post by Denny Britz</a> that uses scikit-learn's <a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html#sklearn.datasets.make_moons"><code>make_moons</code></a>
+dataset generator, (which I thought was pretty cool) so I decided to try it out
+with my impementation. Lo and behold, my implementation was able to fit the
+zero-centered generated data much easier.</p>
+</li>
+</ol>
+<p>If you'd like to follow along with the implementation you can find a
+jupyter notebook with the code and associated math in my <a href="http://github.com/jonchar/ml-python">ml-python repo</a>
+(along with a few other common machine learning algorithms) or read it rendered
+in HTML here:</p>
+<p><strong><a href="../../notebooks/Artificial-Neural-Network">Artificial neural network in Python</a></strong></p>
+
+  
+  </div>
+
+
+							</div>
+						</main>
+
+						<footer class="mt-4 pt-2">
+							<div class="disclaimer">
+								<p>
+								All views expressed on this site are my own and do not represent the opinions of any entity whatsoever with which I have been, am now, or will be affiliated.
+								</p>
+								<p>
+								&copy; Jon Charest, 2018
+								</p>
+							</div>
+						</footer>
+
+					</div>
+				</div>
+
+		</div>
+
+		<!-- Bootstrap JS dependencies -->
+
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	</body>
+</html>
