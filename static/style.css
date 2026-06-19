@@ -24,8 +24,8 @@
     --color-border-light: #2a2518;
     --color-border: #3a3220;
 
-    --font-family: 'Source Sans Pro', sans-serif;
-    --font-size-base: 1rem;
+    --font-family: 'IBM Plex Mono', monospace;
+    --font-size-base: 0.9375rem;
     --font-size-small: 0.8125rem;
 
     --space-xs: 0.25rem;
@@ -41,6 +41,7 @@
   body {
     font-family: var(--font-family);
     font-size: var(--font-size-base);
+    line-height: 1.6;
     color: var(--color-text);
     background: var(--color-bg);
     min-height: 100dvh;
