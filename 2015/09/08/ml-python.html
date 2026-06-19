@@ -3,12 +3,12 @@
 
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<!-- Bootstrap 4 CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<link rel="stylesheet" href="../../../../static/style.css">
-		<link rel="stylesheet" href="../../../../static/pygments.css">
+		<link rel="stylesheet" href="../../../static/style.css">
+		<link rel="stylesheet" href="../../../static/pygments.css">
+		<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 
 		<link rel="shortcut icon" href="/favicon.png">
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -22,76 +22,73 @@
 
 	<body>
 
-		<div class="container">
-			<div class="row">
-				<div class="col-md-3">
+		<div class="page-layout">
+			<aside class="sidebar">
 
-					<header>
-						<h1 class="pt-4 pb-2">
-							<a href="/">Jon's Tech Blog</a>
-						</h1>
-						<div id="bio" class="py-4 align-baseline">
-							<code>contents = [code, data, ml, curiosity]</code>
-						</div>
-						<div id="nav" class="py-4">
-							<nav>
-								<ul class="nav nav-pills flex-column">
-									<li class="nav-item">
-										<a class="nav-link "
-								 href="../../../../">Home</a>
+				<header>
+					<a href="/">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" fill="none" class="logo">
+							<text x="120" y="84" text-anchor="middle" font-family="'Cinzel', serif" font-size="80" font-weight="700">JC</text>
+						</svg>
+					</a>
+					<!--
+<div id="bio">
+</div>
+-->
+					<div id="nav">
+						<nav>
+							<ul class="site-nav">
+								<li>
+									<a class="site-nav__link "
+									href="../../../">Home</a>
+								</li>
+								
+									<li>
+										<a class="site-nav__link "
+										href="../../../blog/">Blog</a>
 									</li>
 								
-									<li class="nav-item">
-										<a class="nav-link "
-										href="../../../../blog/">Blog</a>
+									<li>
+										<a class="site-nav__link "
+										href="../../../notebooks/">Notebooks</a>
 									</li>
 								
-									<li class="nav-item">
-										<a class="nav-link "
-										href="../../../../notebooks/">Notebooks</a>
-									</li>
-								
-								</ul>
-							</nav>
-						</div>
-					</header>
-				</div>
-
-				<div class="col-md-9">
-					<div class="content pt-md-4 pl-md-4">
-						<main>
-
-							<div>
-								
-<h2>This post has moved!</h2>
-<p>You can find it here:
-<a href="../../../../blog/ml-python">/blog/ml-python</a></p>
-
-
-							</div>
-						</main>
-
-						<footer class="mt-4 pt-2">
-							<div class="disclaimer">
-								<p>
-								All views expressed on this site are my own and do not represent the opinions of any entity whatsoever with which I have been, am now, or will be affiliated.
-								</p>
-								<p>
-								&copy; Jon Charest, 2018
-								</p>
-							</div>
-						</footer>
-
+							</ul>
+						</nav>
 					</div>
+
+					<div class="sidebar-contact">
+						<a href="https://github.com/jonchar" target="_blank" class="sidebar-contact__link">GitHub <svg class="external-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+						<a href="https://stackoverflow.com/users/4524746/jonchar" target="_blank" class="sidebar-contact__link">Stack Overflow <svg class="external-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+						<a href="https://scholar.google.com/citations?user=_Ygdbf4AAAAJ" target="_blank" class="sidebar-contact__link">Google Scholar <svg class="external-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+					</div>
+				</header>
+			</aside>
+
+			<main class="content-area">
+
+				<div>
+					
+
+  <h2>This post has moved!</h2>
+  <p>You can find it here:
+<a href="../../../blog/ml-python">/blog/ml-python</a></p>
+
+
+
 				</div>
+
+				<footer>
+	<div class="disclaimer">
+		<p>
+		&copy; Jon Charest, <script type="text/javascript">document.write(new Date().getFullYear());</script>
+		</p>
+	</div>
+</footer>
+
+			</main>
 
 		</div>
-
-		<!-- Bootstrap JS dependencies -->
-
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 	</body>
 </html>
