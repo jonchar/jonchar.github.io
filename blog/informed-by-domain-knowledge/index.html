@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="stylesheet" href="../../static/style.css">
+		<link rel="stylesheet" href="../../static/pygments.css">
+		<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+
+		<link rel="shortcut icon" href="../../static/favicon.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="../../static/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="../../static/favicon-32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="../../static/favicon-16x16.png" sizes="16x16">
+		<link rel="manifest" href="../../static/manifest.json">
+		<link rel="mask-icon" href="../../static/safari-pinned-tab.svg" color="#f0c66b">
+
+		<title>Improving A Naive ETL Approach With Simple Domain Knowledge</title>
+	</head>
+
+	<body>
+
+		<div class="page-layout">
+			<aside class="sidebar">
+
+				<header>
+					<a href="/">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" fill="none" class="logo">
+							<text x="120" y="84" text-anchor="middle" font-family="'Cinzel', serif" font-size="80" font-weight="700">JC</text>
+						</svg>
+					</a>
+					<!--
+<div id="bio">
+</div>
+-->
+					<div id="nav">
+						<nav>
+							<ul class="site-nav">
+								<li>
+									<a class="site-nav__link "
+									href="../../">Home</a>
+								</li>
+								
+									<li>
+										<a class="site-nav__link  site-nav__link--active "
+										href="../">Blog</a>
+									</li>
+								
+									<li>
+										<a class="site-nav__link "
+										href="../../notebooks/">Notebooks</a>
+									</li>
+								
+							</ul>
+						</nav>
+					</div>
+
+					<div class="sidebar-contact">
+						<a href="https://github.com/jonchar" target="_blank" class="sidebar-contact__link">GitHub <svg class="external-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+						<a href="https://stackoverflow.com/users/4524746/jonchar" target="_blank" class="sidebar-contact__link">Stack Overflow <svg class="external-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+						<a href="https://scholar.google.com/citations?user=_Ygdbf4AAAAJ" target="_blank" class="sidebar-contact__link">Google Scholar <svg class="external-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+					</div>
+				</header>
+			</aside>
+
+			<main class="content-area">
+
+				<div>
+					
+  
+  <div class="blog-post">
+		
+			<p class="meta">2026-06-22</p>
+			<h1>Improving A Naive ETL Approach With Simple Domain Knowledge</h1>
+			<h3>The Context</h3>
+<p>It's 2021 and I'm working with a small team at a pharma client to productionize
+the ETL pipeline for a knowledge graph.  We've trudged through lines of untyped
+python, untangled the web of intermediate outputs whose state seemed to change
+with each pass, and finally have it running end-to-end on pyspark and airflow.</p>
+<p>The client knew the original codebase worked and also acknowledged it was a big
+bowl of spaghetti (hence the productionization work). At this point we turned our
+attention to opportunities for optimization. We knew there were more than a few
+as we had taken pains to match the original intended ETL logic to minimize
+output drift. Broadly speaking, the pipeline could be divided into 5-6 distinct
+stages. One end-to-end run of all stages took nearly 48 hours, depending on how
+much new data was processed.</p>
+<h3>The Problem</h3>
+<p>Most of the pipeline's wall clock time (<strong>36</strong> of the ~48 hours) was spent in a
+bottleneck stage: Determining which resolved entities were related to each
+other by which documents they both appeared in. Conceptually this required
+comparing each entity with every other entity, meaning if we had <em>N</em> entities,
+we would then have to run <em>N&times;N</em> comparisons. Thus a <strong>cross join</strong>
+matched closest to the original logic. Practically however, the data contained
+on the order of 10<sup>7</sup> entities, implying 10<sup>14</sup> comparisons!</p>
+<h4>A Naive Approach</h4>
+<div class="hll"><pre><span></span><span class="c1"># Entity IDs each had a list of documents they appeared in</span>
+<span class="n">overlap</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">nodes</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;entity_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;entity_id_1&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;doc_ids&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;doc_ids_1&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="c1"># Cartesian product (!)</span>
+    <span class="o">.</span><span class="n">crossJoin</span><span class="p">(</span>
+        <span class="n">nodes</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;entity_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;entity_id_2&quot;</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;doc_ids&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;doc_ids_2&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="c1"># See you in 36 hours...</span>
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+        <span class="s2">&quot;n_shared_docs&quot;</span><span class="p">,</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">array_intersect</span><span class="p">(</span><span class="s2">&quot;doc_ids_1&quot;</span><span class="p">,</span> <span class="s2">&quot;doc_ids_2&quot;</span><span class="p">))</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+<h3>Simple Domain Knowledge</h3>
+<p>The documents in this case were scientific abstracts. We knew that none of them
+individually could be referencing <em>every</em> single one of the 10<sup>7</sup>
+entities in our graph. In other words, the pairwise comparison matrix was
+likely sparse. Intuitively this meant the naive implementation was performing
+at least <em>N&minus;1</em> (and at most <em>N<sup>2</sup>&minus;N</em>) calls to
+<code>F.array_intersect()</code> that would return no intersection at all.</p>
+<p>Knowing this, wouldn't it be great if we only ran the comparisons that would
+actually yield an intersection?</p>
+<h4>An Informed Approach</h4>
+<p>A simple way around this is to explode out every entity &rarr; document
+relation, inner join on document, then group by entity pairs. This avoids the
+need for a cross join and only counts shared documents for entity pairs that
+actually share them.</p>
+<div class="hll"><pre><span></span><span class="n">overlap</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">nodes</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;entity_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;entity_id_1&quot;</span><span class="p">),</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="s2">&quot;docs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;d_id&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="c1"># Only performs comparisons where there is actually an overlap</span>
+    <span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">nodes</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;entity_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;entity_id_2&quot;</span><span class="p">),</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="s2">&quot;docs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;d_id&quot;</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">,</span>
+        <span class="n">on</span><span class="o">=</span><span class="s2">&quot;d_id&quot;</span>
+    <span class="p">)</span>
+    <span class="c1"># Group-by &amp; count now implicitly handle array intersect</span>
+    <span class="o">.</span><span class="n">groupBy</span><span class="p">([</span><span class="s2">&quot;entity_id_1&quot;</span><span class="p">,</span> <span class="s2">&quot;entity_id_2&quot;</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;d_id&quot;</span><span class="p">:</span> <span class="s2">&quot;n_shared_docs&quot;</span><span class="p">})</span>
+<span class="p">)</span>
+</pre></div>
+<p>The above completed the same overlap calculation in just <strong>46 minutes</strong> on our
+dataset. This significant reduction implies the naive approach was running far
+more comparisons than necessary.</p>
+<h3>Hindsight and Costs</h3>
+<p>Is this optimization obvious in hindsight? Of course. The informed approach is
+simple and leverages very simple domain knowledge. In my experience these kinds
+of naive approaches are common and well-intended, but lack a larger
+perspective, often by no fault of their own. In this particular case, each
+piece of the pipeline was migrated and kept faithful to the original prototype.
+Only once fully assembled did a bottleneck become clear.</p>
+
+  
+  </div>
+
+
+  
+  <nav class="post-nav">
+    <div class="post-nav__side">
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <a class="post-nav__anchor" href="../">All Posts</a>
+    <div class="post-nav__side post-nav__side--right">
+      
+        
+          
+            <a class="post-nav__link" href="../artificial-neural-networks-with-keras/">An artificial neural network using Keras →</a>
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </nav>
+
+				</div>
+
+				<footer>
+	<div class="disclaimer">
+		<p>
+		&copy; Jon Charest, <script type="text/javascript">document.write(new Date().getFullYear());</script>
+		</p>
+	</div>
+</footer>
+
+			</main>
+
+		</div>
+
+	</body>
+</html>
